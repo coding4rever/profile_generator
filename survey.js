@@ -1,39 +1,50 @@
 const readline = require('readline');
 
+const questions = {
+  0: "What's your name? Nicknames are also acceptable :)",
+  1: "What's an activity you like doing?",
+  2: "What do you listen to while doing that?",
+  3: "Which meal is your favourite (eg: dinner, brunch, etc.)",
+  4: "What's your favourite thing to eat for that meal?",
+  5: "Which sport is your absolute favourite?",
+  6: "What is your superpower? In a few words, tell us what you are amazing at!"
+};
+
+const ansObj = {
+  0: "",
+  1: "",
+  2: "",
+  3: "",
+  4: "",
+  5: "",
+  6: ""
+};
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-rl.question(" What's your name? Nicknames are also acceptable :) ", (name) => {
-  console.log(`Thank you for your valuable feedback: ${name}`);
+let i = 0;
 
-  rl.question("What's an activity you like doing?", (activity) => {
-    console.log(`Thank you for your valuable feedback: ${activity}`);
-
-    rl.question("What do you listen to while doing that?", (listen) => {
-      console.log(`Thank you for your valuable feedback: ${listen}`);
-
-      rl.question("Which meal is your favourite (eg: dinner, brunch, etc.)", (meal) => {
-        console.log(`Thank you for your valuable feedback: ${meal}`);
-
-
-        rl.question("What's your favourite thing to eat for that meal?", (dish) => {
-          console.log(`Thank you for your valuable feedback: ${dish}`);
-
-
-          rl.question("Which sport is your absolute favourite?", (sport) => {
-            console.log(`Thank you for your valuable feedback: ${sport}`);
-
-
-            rl.question("What is your superpower? In a few words, tell us what you are amazing at!", (superpower) => {
-              console.log(`Thank you for your valuable feedback: ${superpower}`);
-
-              rl.close();
-            });
-          });
-        });
-      });
+const question = function () {
+  if (i < 7) {
+    rl.question(`${questions[i]}\n`, (answer) => {
+      ansObj[i] = answer;
+      i++;
+      console.log()
+      question()
     });
-  });
-});
+  } else {
+    rl.close()
+    console.log("Your New Profile:");
+    setTimeout(() => console.log(`
+    ${ansObj[0]} likes ${ansObj[1]} while listening to ${ansObj[2]}. 
+    They like eating ${ansObj[4]} for their favorite meal ${ansObj[3]}. 
+    ${ansObj[0]}'s absolute favorite sport is ${ansObj[5]}.
+    When ${ansObj[0]} was asked their superpower they answered: ${ansObj[6]}
+  `), 1500);
+  }
+}
+
+question()
